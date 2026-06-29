@@ -1,0 +1,6 @@
+streamlit
+streamlit-authenticator==0.4.2
+yfinance
+pandas
+numpy
+plotly
