@@ -20,9 +20,11 @@ def get_stock_data(ticker, period="1y"):     # 👈 這裡的參數改為 period
     except Exception as e:
         return None
     
-# ─── 安全風控：自加密設定檔讀取驗證資訊 ───
-# 將 st.secrets 的內容轉為標準字典格式供套件使用
-credentials_dict = dict(st.secrets["credentials"])
+import json
+
+# ─── 安全風控：將唯讀的 secrets 轉換為可修改的標準字典 (Deep Copy) ───
+# 這樣 authenticator 就能正常寫入登入紀錄，不會再觸發唯讀錯誤
+credentials_dict = json.loads(json.dumps(dict(st.secrets["credentials"])))
 
 authenticator = stauth.Authenticate(
     credentials_dict,
