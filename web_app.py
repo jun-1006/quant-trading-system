@@ -20,11 +20,11 @@ def get_stock_data(ticker, period="1y"):     # 👈 這裡的參數改為 period
     except Exception as e:
         return None
     
-import json
+import copy
 
-# ─── 安全風控：將唯讀的 secrets 轉換為可修改的標準字典 (Deep Copy) ───
-# 這樣 authenticator 就能正常寫入登入紀錄，不會再觸發唯讀錯誤
-credentials_dict = json.loads(json.dumps(dict(st.secrets["credentials"])))
+# ─── 安全風控：使用 deepcopy 徹底解除 secrets 的唯讀鎖定 ───
+# 將 Streamlit 特殊的 AttrDict 完整深拷貝為標準可變動字典
+credentials_dict = copy.deepcopy(st.secrets["credentials"])
 
 authenticator = stauth.Authenticate(
     credentials_dict,
