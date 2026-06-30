@@ -22,9 +22,14 @@ def get_stock_data(ticker, period="1y"):     # 👈 這裡的參數改為 period
     
 import copy
 
-# ─── 安全風控：使用 deepcopy 徹底解除 secrets 的唯讀鎖定 ───
-# 將 Streamlit 特殊的 AttrDict 完整深拷貝為標準可變動字典
-credentials_dict = copy.deepcopy(st.secrets["credentials"])
+# ─── 安全風控：手動解除 Streamlit 巢狀 Secrets 唯讀鎖定 ───
+# 避開 deepcopy 觸發的無限迴圈 Bug，精準抓出帳號資料並轉換為純字典
+credentials_dict = {
+    "usernames": {
+        username: dict(user_info) 
+        for username, user_info in st.secrets["credentials"]["usernames"].items()
+    }
+}
 
 authenticator = stauth.Authenticate(
     credentials_dict,
