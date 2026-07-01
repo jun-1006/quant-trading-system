@@ -64,7 +64,7 @@ if 'summary' not in st.session_state:
 with st.sidebar:
     st.header("⚙️ 風險管理參數設定")
     total_capital = st.number_input("💵 總可用資金:", min_value=500, max_value=10000000, value=100000, step=100)
-    risk_percent = st.slider("⚠️ 單筆最大容許虧損 (%):", min_value=0.5, max_value=5.0, value=2.0, step=0.5)
+    risk_percent = st.slider("⚠️ 單筆最大容許虧損 (%):", min_value=0.5, max_value=10.0, value=5.0, step=0.5)
     reward_risk_ratio = st.slider("⚖️ 預期風報比 (停利/停損):", min_value=1.0, max_value=5.0, value=2.0, step=0.5)
     st.info(f"💡 單筆最大容許虧損：**${total_capital * (risk_percent/100):,.0f}**")
 
